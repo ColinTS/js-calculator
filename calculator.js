@@ -11,10 +11,14 @@ var calculatorModule = (function(){
   var memory = 0;
   var total = 0;
 
+  //PUBLIC
   return {
 
     load: function(x){
       total = x;
+      if(typeof x !== 'number') {
+      throw new Error('That aint no numba!');
+      }
       return x;
     },
 
@@ -24,18 +28,30 @@ var calculatorModule = (function(){
 
     add: function(x){
       total += x;
+      if(typeof x !== 'number') {
+      throw new Error('That aint no numba!');
+      }
     },
 
     subtract: function(x){
       total -= x;
+      if(typeof x !== 'number') {
+      throw new Error('That aint no numba!');
+      }
     },
 
     multiply: function(x) {
       total *= x;
+      if(typeof x !== 'number') {
+      throw new Error('That aint no numba!');
+      }
     },
 
     divide: function(x){
       total /= x;
+      if(typeof x !== 'number') {
+      throw new Error('That aint no numba!');
+      }
     },
 
     recallMemory: function(){
@@ -56,10 +72,6 @@ var calculatorModule = (function(){
 
 }) ;
 
-
-  /**
-   * Clear the value stored at `memory`
-   */
 
   /**
    * Validation
