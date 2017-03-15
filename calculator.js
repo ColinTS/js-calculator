@@ -44,16 +44,17 @@ var calculatorModule = (function(){
 
     saveMemory: function(){
       memory = total;
+    },
+
+    clearMemory: function(){
+      memory = 0;
     }
+
 
 
   };
 
 }) ;
-
-  /**
-   * Stores the value of `total` to `memory`
-   */
 
 
   /**
