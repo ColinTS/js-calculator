@@ -32,6 +32,10 @@ var calculatorModule = (function(){
 
     multiply: function(x) {
       total *= x;
+    },
+
+    divide: function(x){
+      total /= x;
     }
 
   };
