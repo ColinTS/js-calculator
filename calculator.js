@@ -28,6 +28,10 @@ var calculatorModule = (function(){
 
     subtract: function(x){
       total -= x;
+    },
+
+    multiply: function(x) {
+      total *= x;
     }
 
   };
