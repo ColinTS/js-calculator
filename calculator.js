@@ -36,35 +36,16 @@ var calculatorModule = (function(){
 
     divide: function(x){
       total /= x;
+    },
+
+    recallMemory: function(){
+      return memory;
     }
+
 
   };
 
 }) ;
-
-  /**
-   * Sums the value passed in with `total`
-   * @param { Number } x
-   */
-
-
-  /**
-   * Subtracts the value passed in from `total`
-   * @param  { Number } x
-   */
-
-
-  /**
-   * Multiplies the value by `total`
-   * @param  { Number } x
-   */
-
-
-  /**
-   * Divides the value passing in by `total`
-   * @param  { Number } x
-   */
-
 
   /**
    * Return the value stored at `memory`
