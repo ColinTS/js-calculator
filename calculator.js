@@ -40,18 +40,16 @@ var calculatorModule = (function(){
 
     recallMemory: function(){
       return memory;
+    },
+
+    saveMemory: function(){
+      memory = total;
     }
 
 
   };
 
 }) ;
-
-  /**
-   * Return the value stored at `memory`
-   * @return { Number }
-   */
-
 
   /**
    * Stores the value of `total` to `memory`
