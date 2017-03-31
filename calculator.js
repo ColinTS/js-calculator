@@ -1,3 +1,4 @@
+console.log('asdad')
 /**
  * Declare a function named `calculatorModule`
  * this function will have two private variables declared inside of it.
@@ -66,11 +67,13 @@ var calculatorModule = (function(){
       memory = 0;
     }
 
-
-
   };
 
 }) ;
+
+var myCalc = calculatorModule();
+myCalc.load(100);
+console.log(myCalc.getTotal);
 
 
   /**
