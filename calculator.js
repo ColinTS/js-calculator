@@ -6,7 +6,7 @@ console.log('asdad')
  * @variable PRIVATE { Number } `total`
  * @return {object} `calculator` object that can be used
  */
-var calculatorModule = (function(){
+module.exports = (function() {
 
   //PRIVATE
   var memory = 0;
@@ -32,6 +32,7 @@ var calculatorModule = (function(){
       if(typeof x !== 'number') {
       throw new Error('That aint no numba!');
       }
+      return total;
     },
 
     subtract: function(x){
@@ -39,6 +40,7 @@ var calculatorModule = (function(){
       if(typeof x !== 'number') {
       throw new Error('That aint no numba!');
       }
+      return total;
     },
 
     multiply: function(x) {
@@ -46,21 +48,23 @@ var calculatorModule = (function(){
       if(typeof x !== 'number') {
       throw new Error('That aint no numba!');
       }
+      return total;
     },
 
     divide: function(x){
       total /= x;
-      if(typeof x !== 'number') {
-      throw new Error('That aint no numba!');
+      if(typeof x !== 'number' || x === 0) {
+      throw new Error('That wont work!');
       }
+      return total;
     },
 
     recallMemory: function(){
       return memory;
     },
 
-    saveMemory: function(){
-      memory = total;
+    saveMemory: function(num){
+      memory = num;
     },
 
     clearMemory: function(){
@@ -69,14 +73,4 @@ var calculatorModule = (function(){
 
   };
 
-}) ;
-
-var myCalc = calculatorModule();
-myCalc.load(100);
-console.log(myCalc.getTotal);
-
-
-  /**
-   * Validation
-   */
-
+});

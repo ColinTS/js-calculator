@@ -1,268 +1,219 @@
-/****Check if Browser or CLI****/
-var window = window || undefined;
+// import dependencies e.g. chai and the calculator module
+/*jshint esversion: 6*/
+const chai = require('chai');
+const calculatorModule = require('../calculator.js');
 
-if (window) {
-  GLOBAL = window;
-} else {
-  var fs = require('fs');
-  var vm = require('vm');
-  var chai = require('chai');
-  var functionsFile = fs.readFileSync(process.cwd() + '/calculator.js');
-  vm.runInThisContext(functionsFile); // file runs and it's contents has access to GLOBAL
-}
-/*******************************/
-var expect = chai.expect;
-var should = chai.should();
+// define two variables: `expect` and `should
+const expect = chai.expect;
+const should = chai.should();
 
+// define a `describe` block. what are we testing? what should be name this suite? This is the "container" describe block.
+  /**
+   * each method should have it's own `describe` block
+   */
 describe("calculatorModule", function() {
-  var newCalc;
-  var calculatorModule = GLOBAL.calculatorModule;
 
   it('should be a function', function () {
     expect(calculatorModule).to.exist;
     expect(calculatorModule).to.be.an('function');
   });
-  it('should return an object literal when invoked', function () {
+
+  it  ('should return an object', function (){
     expect(calculatorModule()).to.be.an('object');
   });
 
-  describe('Calculator Methods', function () {
-    beforeEach(function () {
-      newCalc = calculatorModule();
-    });
-    describe('#load', function () {
-      it('should be a function available on a new calculator object', function () {
-        expect(newCalc.load).to.be.a('function');
-        expect(GLOBAL.load).to.be.undefined;
-      });
-      it('should load a number into the calculator', function () {
-        expect(newCalc.load(666)).to.be.a('number');
-        expect(newCalc.load(3)).to.equal(3);
-        expect(newCalc.load(67)).to.equal(67);
-        expect(newCalc.load(903)).to.equal(903);
-      });
-    });
-
-    describe('#getTotal', function () {
-      it('should be a function that is available on the calculator', function () {
-        expect(newCalc.getTotal).to.be.a('function');
-        expect(GLOBAL.getTotal).to.be.undefined;
-      });
-      it('should return the current total', function () {
-        /*CHECK INITIAL VALUE*/
-        expect(newCalc.getTotal()).to.equal(0);
-        newCalc.load(5);
-        expect(newCalc.getTotal()).to.equal(5);
-        newCalc.load(12812);
-        expect(newCalc.getTotal()).to.equal(12812);
-        newCalc.load(02571648);
-        expect(newCalc.getTotal()).to.equal(02571648);
-      });
-    });
-
-    describe('#add', function () {
-      it('should be a function available on a new calculator object', function () {
-        expect(newCalc.add).to.be.a('function');
-        expect(GLOBAL.add).to.be.undefined;
-      });
-      it('should take a Number and add it to the total', function () {
-        newCalc.load(0);
-        newCalc.add(0);
-        expect(newCalc.getTotal()).to.be.a('number');
-        newCalc.add(3);
-        expect(newCalc.getTotal()).to.equal(3);
-        newCalc.add(9871231);
-        expect(newCalc.getTotal()).to.equal(9871234);
-      });
-    });
-
-    describe('#subtract', function () {
-      it('should be a function available on a new calculator object', function () {
-        expect(newCalc.subtract).to.be.a('function');
-        expect(GLOBAL.subtract).to.be.undefined;
-      });
-      it('should take a Number and subtract it from the total', function () {
-        newCalc.load(321);
-        newCalc.subtract(21);
-        expect(newCalc.getTotal()).to.be.a('number');
-        newCalc.subtract(150);
-        expect(newCalc.getTotal()).to.equal(150);
-        newCalc.subtract(151);
-        expect(newCalc.getTotal()).to.equal(-1);
-      });
-    });
-
-    describe('#multiply', function () {
-      it('should be a function available on a new calculator object', function () {
-        expect(newCalc.multiply).to.be.a('function');
-        expect(GLOBAL.multiply).to.be.undefined;
-      });
-      it('should take a Number and multiply it by the total', function () {
-        newCalc.load(1);
-        newCalc.multiply(19);
-        expect(newCalc.getTotal()).to.be.a('number');
-        newCalc.multiply(63);
-        expect(newCalc.getTotal()).to.equal(1197);
-        newCalc.multiply(258);
-        expect(newCalc.getTotal()).to.equal(308826);
-        newCalc.load(20);
-        newCalc.multiply(4);
-        expect(newCalc.getTotal()).to.equal(80);
-      });
-    });
-
-    describe('#divide', function () {
-      it('should be a function available on a new calculator object', function () {
-        expect(newCalc.divide).to.be.a('function');
-        expect(GLOBAL.divide).to.be.undefined;
-      });
-      it('should take a Number and divide it by the total', function () {
-        newCalc.load(50);
-        newCalc.divide(1);
-        expect(newCalc.getTotal()).to.be.a('number');
-        newCalc.divide(2);
-        expect(newCalc.getTotal()).to.equal(25);
-        newCalc.divide(5);
-        expect(newCalc.getTotal()).to.equal(5);
-      });
-    });
-
-    describe('#recallMemory', function () {
-      it('should be a function available on a new calculator object', function () {
-        expect(newCalc.recallMemory).to.be.a('function');
-        expect(GLOBAL.recallMemory).to.be.undefined;
-      });
-      it('should return the value of a number stored in memory', function () {
-        expect(newCalc.recallMemory()).to.be.a('number');
-        expect(newCalc.recallMemory()).to.equal(0);
-      });
-    });
-
-    describe('#saveMemory', function () {
-      it('should be a function available on a new calculator object', function () {
-        expect(newCalc.saveMemory).to.be.a('function');
-        expect(GLOBAL.saveMemory).to.be.undefined;
-      });
-      it('should save the number to the memory', function () {
-        /*CHECK INITIAL VALUE*/
-        expect(newCalc.recallMemory()).to.equal(0);
-        /*ADD*/
-        newCalc.load(5);
-        newCalc.add(763);
-        newCalc.saveMemory();
-        expect(newCalc.recallMemory()).to.equal(768);
-        /*SUBTRACT*/
-        newCalc.load(12812);
-        newCalc.subtract(763);
-        newCalc.saveMemory();
-        expect(newCalc.recallMemory()).to.equal(12049);
-        /*MULTIPLY*/
-        newCalc.load(5);
-        newCalc.multiply(763);
-        newCalc.saveMemory();
-        expect(newCalc.recallMemory()).to.equal(3815);
-        /*DIVIDE*/
-        newCalc.load(666);
-        newCalc.divide(2);
-        newCalc.saveMemory();
-        expect(newCalc.recallMemory()).to.equal(333);
-      });
-    });
-
-    describe('#clearMemory', function () {
-      it('should be a function available on a new calculator object', function () {
-        expect(newCalc.clearMemory).to.be.a('function');
-        expect(GLOBAL.clearMemory).to.be.undefined;
-      });
-      it('should clear the memory', function () {
-        /*ADD*/
-        newCalc.load(5);
-        newCalc.add(763);
-        newCalc.saveMemory();
-        newCalc.clearMemory();
-        expect(newCalc.recallMemory()).to.equal(0);
-        /*SUBTRACT*/
-        newCalc.load(12812);
-        newCalc.subtract(763);
-        newCalc.saveMemory();
-        newCalc.clearMemory();
-        expect(newCalc.recallMemory()).to.equal(0);
-        /*MULTIPLY*/
-        newCalc.load(5);
-        newCalc.multiply(763);
-        newCalc.saveMemory();
-        newCalc.clearMemory();
-        expect(newCalc.recallMemory()).to.equal(0);
-        /*DIVIDE*/
-        newCalc.load(666);
-        newCalc.divide(2);
-        newCalc.saveMemory();
-        newCalc.clearMemory();
-        expect(newCalc.recallMemory()).to.equal(0);
-      });
-    });
-    /*FINAL BOSS*/
-    describe('Validations', function () {
-      it('private variables are not on the global namespace', function () {
-        expect(GLOBAL.total).to.be.undefined;
-        expect(GLOBAL.memory).to.be.undefined;
-      });
-      it('private variables are not exposed by a calculator object', function () {
-        expect(newCalc.total).to.be.undefined;
-        expect(newCalc.memory).to.be.undefined;
-      });
-      it('If any calculator function is given a non-Number data type as an argument display an error message string', function () {
-        /*LOAD*/
-        describe('#load', function () {
-          it('pass validations', function () {
-            expect(newCalc.load.bind(null, '')).to.throw(Error);
-            expect(newCalc.load.bind(null, [])).to.throw(Error);
-            expect(newCalc.load.bind(null, {})).to.throw(Error);
-            expect(newCalc.load.bind(null, null)).to.throw(Error);
-            expect(newCalc.load.bind(null, function(){})).to.throw(Error);
-          });
-        });
-        /*ADD*/
-        describe('#add', function () {
-          it('pass validations', function () {
-            expect(newCalc.add.bind(null, '')).to.throw(Error);
-            expect(newCalc.add.bind(null, [])).to.throw(Error);
-            expect(newCalc.add.bind(null, {})).to.throw(Error);
-            expect(newCalc.add.bind(null, null)).to.throw(Error);
-            expect(newCalc.add.bind(null, function(){})).to.throw(Error);
-          });
-        });
-        /*SUBTRACT*/
-        describe('#subtract', function () {
-          it('pass validations', function () {
-            expect(newCalc.subtract.bind(null, '')).to.throw(Error);
-            expect(newCalc.subtract.bind(null, [])).to.throw(Error);
-            expect(newCalc.subtract.bind(null, {})).to.throw(Error);
-            expect(newCalc.subtract.bind(null, null)).to.throw(Error);
-            expect(newCalc.subtract.bind(null, function(){})).to.throw(Error);
-          });
-        });
-        /*MULTIPLY*/
-        describe('#multiply', function () {
-          it('pass validations', function () {
-            expect(newCalc.multiply.bind(null, '')).to.throw(Error);
-            expect(newCalc.multiply.bind(null, [])).to.throw(Error);
-            expect(newCalc.multiply.bind(null, {})).to.throw(Error);
-            expect(newCalc.multiply.bind(null, null)).to.throw(Error);
-            expect(newCalc.multiply.bind(null, function(){})).to.throw(Error);
-          });
-        });
-        /*DIVIDE*/
-        describe('#divide', function () {
-          it('pass validations', function () {
-            expect(newCalc.divide.bind(null, '')).to.throw(Error);
-            expect(newCalc.divide.bind(null, [])).to.throw(Error);
-            expect(newCalc.divide.bind(null, {})).to.throw(Error);
-            expect(newCalc.divide.bind(null, null)).to.throw(Error);
-            expect(newCalc.divide.bind(null, function(){})).to.throw(Error);
-          });
-        });
-      });
-    });
-  });
 });
+  // define a `describe` block to test the `load` method and all these tests go INSIDE of this describe
+
+describe("Load", function() {
+  var calc;
+  beforeEach(function(){
+   calc = calculatorModule();
+  });
+
+  it('should be a function', function() {
+    expect(calc.load).to.be.an('function');
+  });
+
+  it('should return a number', function(){
+    expect(calc.load(3)).to.equal(3);
+  });
+
+  it('should throw an error if a number is not inputted', function(){
+    expect(calc.load.bind(null, 'asd')).to.throw('That aint no numba!');
+  });
+
+});
+
+  // define a `describe` block to test the `getTotal` method and all these tests go INSIDE of this describe
+
+describe("Get Total", function() {
+  var calc;
+  beforeEach(function(){
+   calc = calculatorModule();
+  });
+
+  it('should be a function', function() {
+    expect(calc.getTotal).to.be.an('function');
+  });
+
+  it('should return a number', function(){
+    calc.load(3);
+    expect(calc.getTotal()).to.equal(3);
+  });
+
+});
+  // define a `describe` block to test the `add` method and all these tests go INSIDE of this describe
+
+describe("Add", function() {
+  var calc;
+  beforeEach(function(){
+   calc = calculatorModule();
+  });
+
+  it('should be a function', function() {
+    expect(calc.add).to.be.an('function');
+  });
+
+  it('should add a number to the total', function(){
+    calc.load(4);
+    expect(calc.add(5)).to.equal(9);
+    expect(calc.add(-3)).to.equal(6);
+  });
+
+  it('should throw an error if a number is not inputted', function(){
+    expect(calc.add.bind(null, 'asd')).to.throw('That aint no numba!');
+  });
+
+});
+  // define a `describe` block to test the `subtract` method and all these tests go INSIDE of this describe
+
+describe("Subtract", function() {
+  var calc;
+  beforeEach(function(){
+   calc = calculatorModule();
+  });
+
+  it('should be a function', function() {
+    expect(calc.subtract).to.be.an('function');
+  });
+
+  it('should subtract a number from the total', function(){
+    calc.load(4);
+    expect(calc.subtract(5)).to.equal(-1);
+    expect(calc.subtract(-3)).to.equal(2);
+  });
+
+  it('should throw an error if a number is not inputted', function(){
+    expect(calc.subtract.bind(null, 'asd')).to.throw('That aint no numba!');
+  });
+
+});
+  // define a `describe` block to test the `multiply` method and all these tests go INSIDE of this describe
+
+describe("Multiply", function() {
+  var calc;
+  beforeEach(function(){
+   calc = calculatorModule();
+  });
+
+  it('should be a function', function() {
+    expect(calc.multiply).to.be.an('function');
+  });
+
+  it('should multiply numbers', function(){
+    calc.load(4);
+    expect(calc.multiply(5)).to.equal(20);
+    expect(calc.multiply(-3)).to.equal(-60);
+  });
+
+  it('should throw an error if a number is not inputted', function(){
+    expect(calc.multiply.bind(null, 'asd')).to.throw('That aint no numba!');
+  });
+
+});
+  // define a `describe` block to test the `divide` method and all these tests go INSIDE of this describe
+
+describe("Divide", function() {
+  var calc;
+  beforeEach(function(){
+   calc = calculatorModule();
+  });
+
+  it('should be a function', function() {
+    expect(calc.divide).to.be.an('function');
+  });
+
+  it('should divide numbers', function(){
+    calc.load(12);
+    expect(calc.divide(2)).to.equal(6);
+    expect(calc.divide(-3)).to.equal(-2);
+  });
+
+  it('should throw an error if a number is not inputted', function(){
+    expect(calc.divide.bind(null, 'asd')).to.throw('That wont work!');
+  });
+
+  it('should not allow you to divide by 0', function(){
+    expect(calc.divide.bind(null, 0)).to.throw('That wont work!');
+  });
+
+});
+  // define a `describe` block to test the `recallMemory` method and all these tests go INSIDE of this describe
+
+describe("Memory", function() {
+  var calc;
+  beforeEach(function(){
+   calc = calculatorModule();
+  });
+
+  it('should be a function', function() {
+    expect(calc.recallMemory).to.be.an('function');
+  });
+
+  it('should return the number stored in memory', function(){
+    expect(calc.recallMemory()).to.equal(0);
+  });
+
+});
+  // define a `describe` block to test the `saveMemory` method and all these tests go INSIDE of this describe
+
+describe("Save Memory", function() {
+  var calc;
+  beforeEach(function(){
+   calc = calculatorModule();
+  });
+
+  it('should be a function', function() {
+    expect(calc.saveMemory).to.be.an('function');
+  });
+
+  it('should return the number stored in total', function(){
+    calc.saveMemory(5);
+    expect(calc.recallMemory()).to.equal(5);
+  });
+
+});
+  // define a `describe` block to test the `clearMemory` method and all these tests go INSIDE of this describe
+
+describe("Clear Memory", function() {
+  var calc;
+  beforeEach(function(){
+   calc = calculatorModule();
+  });
+
+  it('should be a function', function() {
+    expect(calc.clearMemory).to.be.an('function');
+  });
+
+  it('should return the number stored in total', function(){
+    calc.clearMemory();
+    expect(calc.recallMemory()).to.equal(0);
+  });
+
+});
+  /**
+   * FINAL BOSS
+   */
+
+  // define a `describe` block to test the `validation` features of your methods and all these tests go INSIDE of this describe
